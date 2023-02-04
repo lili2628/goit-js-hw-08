@@ -1,5 +1,6 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import createGalleryCard from './js-modules-01/create-gallary-card';
 // Add imports above this line
 import { galleryItems } from './gallery-items';
 // Change code below this line
@@ -11,17 +12,7 @@ const galleryCardEl = createGalleryCard(galleryItems);
 
 galleryEl.insertAdjacentHTML('beforeend', galleryCardEl);
 
-function createGalleryCard(galleryItems) {
-    return galleryItems
-        .map(({ preview, original, description }) => {
-            return `       
-            <a class="gallery__item" href="${original}">
-                <img class="gallery__image" src="${preview}" alt="${description}" />
-            </a>
-        `;
-        })
-        .join('');
-}
+
 
 let gallery = new SimpleLightbox('.gallery a',
     {
@@ -29,7 +20,7 @@ let gallery = new SimpleLightbox('.gallery a',
         captionType: 'attr',
         captionsData: 'alt',
         captionPosition: 'bottom',
-        captionDelay: 250
+        captionDelay: 250,
     });
 
 
