@@ -1,6 +1,6 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import createGalleryCard from './js-modules-01/create-gallary-card';
+import createGalleryCard from './js-export-modules/create-gallary-card';
 // Add imports above this line
 import { galleryItems } from './gallery-items';
 // Change code below this line
