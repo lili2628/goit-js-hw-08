@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
 import putDataFromObjectToForm from '../js/js-export-modules/putDataFromObjectToForm';
-import clearObjectValues from './js-export-modules/clearObjectValues';
+import clearObjectValues from '../js/js-export-modules/clearObjectValues';
 
 const FORM_STORAGE_KEY = 'feedback-form-state';
 const formEl = document.querySelector('.feedback-form');
