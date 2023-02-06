@@ -5,14 +5,10 @@ import createGalleryCard from './js-export-modules/create-gallary-card';
 import { galleryItems } from './gallery-items';
 // Change code below this line
 
-console.log(galleryItems); 
-
 const galleryEl = document.querySelector('.gallery');
 const galleryCardEl = createGalleryCard(galleryItems);
 
 galleryEl.insertAdjacentHTML('beforeend', galleryCardEl);
-
-
 
 let gallery = new SimpleLightbox('.gallery a',
     {
