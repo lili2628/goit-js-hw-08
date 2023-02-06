@@ -1,5 +1,5 @@
-export default function clearObjectValues(object) {
-    for (key in object) {
-        object[key] = '';
+export default function clearObjectValues(obj) {
+    for (key in obj) {
+        obj[key] = '';
     }
 }
