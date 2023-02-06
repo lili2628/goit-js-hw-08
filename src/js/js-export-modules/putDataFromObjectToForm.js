@@ -1,5 +1,5 @@
 export default function putDataFromObjectToForm(form, obj) {
-     for (key in obj) {
+     for (let key in obj) {
             form.elements[key].value = obj[key];
         }
 }

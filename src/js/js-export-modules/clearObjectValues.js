@@ -1,5 +1,5 @@
 export default function clearObjectValues(obj) {
-    for (key in obj) {
+    for (let key in obj) {
         obj[key] = '';
     }
 }
