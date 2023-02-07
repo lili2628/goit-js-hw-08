@@ -1,53 +1,43 @@
-import throttle from "lodash.throttle";
+import throttle from 'lodash.throttle';
+import putDataFromObjectToForm from '../js/js-export-modules/putDataFromObjectToForm';
 
-const STORAGE_KEY = 'feedback-form-state';
+const FORM_STORAGE_KEY = 'feedback-form-state';
+const formEl = document.querySelector('.feedback-form');
+let formData = JSON.parse(localStorage.getItem(FORM_STORAGE_KEY)) || {};
 
-const savedData = localStorage.getItem(STORAGE_KEY);
-const parsedData = JSON.parse(savedData);
-// console.log(parsedData);
+formEl.addEventListener('input', throttle(onInputForm, 500));
+formEl.addEventListener('submit', onFormSubmit);
 
-const formData = {...parsedData};
+populateFormData();
 
-const form = document.querySelector('.feedback-form');
-savedMessage();
+function onInputForm (e) {
+    formData[e.target.name] = e.target.value;
 
+    const formDataString = JSON.stringify(formData);
 
-form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', throttle(onFormInput, 500));
+    localStorage.setItem(FORM_STORAGE_KEY, formDataString);
+}
 
-function onFormInput(event) {
+function onFormSubmit (e) {
+    e.preventDefault();
 
-    formData[event.target.name] = event.target.value;
-
-    const parsedData = JSON.stringify(formData);
-    localStorage.setItem(STORAGE_KEY, parsedData);
-};
-
-function savedMessage() {
-    const parseForm = parsedData;
-
-    if (parseForm) {
-        const objectKeys = Object.entries(parseForm);
-        
-        objectKeys.forEach(([key, value]) => {
-            // console.log(key);
-            // console.log(value);
-            form.elements[key].value = value;
-        });
-    };
-};
-
-function onFormSubmit(event) {
-
-    if (form.elements.email.value === '' || form.elements.message.value === '') {
-        alert('Заповніть усі поля вводу!')
+    if (formEl.elements.email.value === '' || formEl.elements.message.value === '') {
+        alert('Для відправлення форми необхідно заповнити всі поля вводу!')
     } else {
-        event.preventDefault();
-        event.currentTarget.reset();
-        localStorage.clear('feedback-form-state');
+        e.currentTarget.reset();
+        localStorage.removeItem(FORM_STORAGE_KEY);
         console.log(formData);
+    
+        formData = {};
     }
-};
+}
 
+function populateFormData() {
+    const savedFormData = localStorage.getItem(FORM_STORAGE_KEY);
 
-
+    if (savedFormData) {
+        const savedFormDataParce = JSON.parse(savedFormData);
+    
+        putDataFromObjectToForm(formEl, savedFormDataParce);
+    }
+}

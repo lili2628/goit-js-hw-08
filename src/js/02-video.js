@@ -9,19 +9,15 @@ onGetTimePause();
 
 player.on('timeupdate', throttle(onRememberTimeOfPause, 1000));
 
-function onRememberTimeOfPause(data) {
-    const dataString = JSON.stringify(data);
-
-    localStorage.setItem(VIDEO_STORAGE_KEY, dataString);
+function onRememberTimeOfPause({seconds}) {
+    localStorage.setItem(VIDEO_STORAGE_KEY, seconds);
 }
 
 function onGetTimePause() {
-    const timeOfPause = localStorage.getItem(VIDEO_STORAGE_KEY);
+    const seconds = localStorage.getItem(VIDEO_STORAGE_KEY);
 
-    if (timeOfPause) {
-        const parsedTimeOfPause = JSON.parse(timeOfPause);
-
-        player.setCurrentTime(parsedTimeOfPause.seconds);
+    if (seconds){
+        player.setCurrentTime(seconds);
     }
 }
 
