@@ -1,43 +1,53 @@
-import throttle from 'lodash.throttle';
-import putDataFromObjectToForm from '../js/js-export-modules/putDataFromObjectToForm';
-import clearObjectValues from '../js/js-export-modules/clearObjectValues';
+import throttle from "lodash.throttle";
 
-const FORM_STORAGE_KEY = 'feedback-form-state';
-const formEl = document.querySelector('.feedback-form');
-const formData = {};
+const STORAGE_KEY = 'feedback-form-state';
 
-formEl.addEventListener('input', throttle(onInputForm, 500));
-formEl.addEventListener('submit', onFormSubmit);
+const savedData = localStorage.getItem(STORAGE_KEY);
+const parsedData = JSON.parse(savedData);
+// console.log(parsedData);
 
-populateFormData();
+const formData = {...parsedData};
 
-function onInputForm (e) {
-    formData[e.target.name] = e.target.value;
+const form = document.querySelector('.feedback-form');
+savedMessage();
 
-    const formDataString = JSON.stringify(formData);
 
-    localStorage.setItem(FORM_STORAGE_KEY, formDataString);
-}
+form.addEventListener('submit', onFormSubmit);
+form.addEventListener('input', throttle(onFormInput, 500));
 
-function onFormSubmit (e) {
-    e.preventDefault();
+function onFormInput(event) {
 
-    e.currentTarget.reset();
-    localStorage.removeItem(FORM_STORAGE_KEY);
-    console.log(formData);
-    
-    clearObjectValues(formData);
-}
+    formData[event.target.name] = event.target.value;
 
-function populateFormData() {
-    const savedFormData = localStorage.getItem(FORM_STORAGE_KEY);
+    const parsedData = JSON.stringify(formData);
+    localStorage.setItem(STORAGE_KEY, parsedData);
+};
 
-    if (savedFormData) {
-        const savedFormDataParce = JSON.parse(savedFormData);
-    
-        putDataFromObjectToForm(formEl, savedFormDataParce);
+function savedMessage() {
+    const parseForm = parsedData;
+
+    if (parseForm) {
+        const objectKeys = Object.entries(parseForm);
+        
+        objectKeys.forEach(([key, value]) => {
+            // console.log(key);
+            // console.log(value);
+            form.elements[key].value = value;
+        });
+    };
+};
+
+function onFormSubmit(event) {
+
+    if (form.elements.email.value === '' || form.elements.message.value === '') {
+        alert('Заповніть усі поля вводу!')
+    } else {
+        event.preventDefault();
+        event.currentTarget.reset();
+        localStorage.clear('feedback-form-state');
+        console.log(formData);
     }
-}
+};
 
 
 
